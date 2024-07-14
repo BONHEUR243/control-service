@@ -23,7 +23,7 @@ PASSWORD_RESET_TIMEOUT=300
 SECRET_KEY = 'django-insecure-bx*%k00o)=un(5$%$c6!1t$n9+k7g0w_3(re*5=*s5lxsklvbe'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 
 ALLOWED_HOSTS = ['*']
