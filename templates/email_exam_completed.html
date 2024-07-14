@@ -1,0 +1,44 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Assessment finished</title>
+    <style>
+        body {
+            background: url('{% static "images/background.jpg" %}') no-repeat center center;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            background: url('{% static "images/backgrounda.jpg" %}') no-repeat center center;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            margin: 0 auto;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Assessment finished</h1>
+        <p>Hello Dear {{ student.student_name.capitalize }},</p>
+        <p>You have finished the assessment of {{ exam.course.capitalize }}.</p>
+        <p>Date : {{ exam.date }}</p>
+        <p>Entry time : {{ entry_time }}</p>
+        <p>Exit time : {{ exit_time }}</p>
+        <p>Thanks!</p>
+        <p>Control Services Team</p>
+        <a href="#" class="button" onclick="window.print(); return false;">Print</a>
+    </div>
+</body>
+</html>

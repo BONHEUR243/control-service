@@ -1,0 +1,49 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Assessment finished</title>
+    <style>
+        body {
+            ackground-image: url(‘static 'images/backgrounda.jpg'’)  no-repeat center center;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            background-image: url(‘static 'images/backgrounda.jpg'’)  no-repeat center center;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            margin: 0 auto;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body style=”background-image: url(‘static 'images/backgrounda.jpg'’); background-color: #ffffff;”>
+    <div class="container">
+        <h1>Reset Password</h1>
+        <p>Hello Dear {{user.first_name}},</p>
+        <p>We've just received your request at {{protocol}}://{{domain}} ,click the link below
+            to finish up the process of reseting the password.</p>
+        <p>{{protocol}}://{{domain}}{% url 'reset-confirm' uidb64=uid token=token %}</p>
+        <p>This link will soon expire!
+
+            Go ahead and ignore it if you didn't make any request of changing password.
+            
+            Control Service ULK!</p>
+
+        <p><img src="{% static 'images/backgrounda.jpg' %}" alt="img" /></p>
+        
+    </div>
+</body>
+</html>

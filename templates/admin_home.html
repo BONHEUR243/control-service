@@ -1,0 +1,428 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	  
+    <title>Control Service | </title>
+
+    
+    <!-- Bootstrap -->
+    <link href="{% static 'gentela-gh-pages/vendors/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{% static 'gentela-gh-pages/vendors/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="{% static 'gentela-gh-pages/vendors/nprogress/nprogress.css' %}" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="{% static 'gentela-gh-pages/vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet">
+    <!-- bootstrap-wysiwyg -->
+    <link href="{% static 'gentela-gh-pages/vendors/google-code-prettify/bin/prettify.min.css' %}" rel="stylesheet">
+    <!-- Select2 -->
+    <link href="{% static 'gentela-gh-pages/vendors/select2/dist/css/select2.min.css' %}" rel="stylesheet">
+    <!-- Switchery -->
+    <link href="{% static 'gentela-gh-pages/vendors/switchery/dist/switchery.min.css' %}" rel="stylesheet">
+    <!-- starrr -->
+    <link href="{% static 'gentela-gh-pages/vendors/starrr/dist/starrr.css' %}" rel="stylesheet">
+    <!-- bootstrap-daterangepicker -->
+    <link href="{% static 'gentela-gh-pages/vendors/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="{% static 'gentela-gh-pages/build/css/custom.min.css' %}" rel="stylesheet">
+  </head>
+
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="{% url 'profile' %}" class="site_title"><i class="fa fa-university"></i> <span>Control Service</span></a>
+              
+            </div>
+
+            <div class="clearfix"></div>
+{% if request.user.is_authenticated %}
+            <!-- menu profile quick info -->
+            {% if user.profile_picture %}
+            <div class="profile clearfix">
+              <div class="profile_pic">
+                <img src="{{ user.profile_picture.url }}" alt="..." class="img-circle profile_img">
+              </div>
+              {% else %}
+            <p>No profile picture uploaded.</p>
+            {% endif %}
+              <div class="profile_info">
+                <span>Welcome,</span>
+                <h2>{{ request.user.first_name.capitalize }}</h2>
+              </div>
+            </div>
+            <!-- /menu profile quick info -->
+
+            <br />
+
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                <h3>General</h3>
+                <ul class="nav side-menu">
+                  <li> <a href="{% url 'profile' %}"><i class="fa fa-user"></i> Profile <span></span></a>
+                   
+                  </li>
+                {% if request.user.user_type == 'supervisor'%}
+                
+                    <li><a href="{% url 'register' %}"><i class="fa fa-edit"></i> Register Students and Administrators </a>
+                    
+                    </li>
+                {% endif %}
+
+                {% if request.user.user_type == 'student' %}
+                    <li><a href="{% url 'schedule' %}"><i class="fa fa-table"></i> Schedule</a>
+                    </li>
+                    <li><a href="{% url 'claim' %}"><i class="fa fa-exclamation-circle"></i> Claim or Request</a>
+                    </li>
+                    <li><a href="{% url 'view_claims' %}"><i class="fa fa-envelope-o"></i>Messages </a>
+                    </li>
+                    <li><a href="{% url 'exam_status_student' %}"><i class="fa fa-dot-circle-o"></i>Exams Status </a>
+                    </li>
+
+                  <li><a href="learnUse/"><i class="fa fa-gear"></i> Learn the Use</a></li>
+
+                  {% endif %}
+                </ul>
+              </div>
+              <div class="menu_section">
+                
+                
+                <ul class="nav side-menu">
+                {% if user.is_admin %}
+                  <li><a><i class="fa fa-tasks"></i> Schedules per class <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="/schedule/grouped/">View Schedules</a></li>
+                      <li><a href="{% url 'add_schedule' %}">Add Schedules</a></li>
+                    </ul>
+                  </li>
+
+                  <li><a><i class="fa fa-suitcase"></i> Manage <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="{% url 'manage_students' %}">Manage Students</a></li>
+                      <li><a href="{% url 'manage_reference_amounts' %}">Manage Minimum Amount</a></li>
+                    </ul>  
+                  </li>
+
+                  <li><a href="{% url 'exam_status_admin' %}"><i class="fa fa-check-square-o"></i> Exam Status </a>
+                  </li>  
+
+                  <li><a href="{% url 'view_claims' %}"><i class="fa fa-gears"></i> Claims and Requests{% if unreplied_count > 0 %}({{ unreplied_count }}){% endif %}</a>
+                  </li> 
+                  <li><a href="learnUse/"><i class="fa fa-gear"></i> Learn the Use</a></li>
+
+                {% endif %}
+
+                    <li><a href="{% url 'logoutUser' %}"><i class="fa fa-sign-out"></i> Log Out</a></li>
+                </ul>
+              </div>
+
+            </div>
+            <!-- /sidebar menu -->
+
+            <!-- /menu footer buttons -->
+            <div class="sidebar-footer hidden-small">
+              <a data-toggle="tooltip" data-placement="top" title="Settings">
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="Lock">
+                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="Logout" href="{% url 'logoutUser' %}">
+                <span class="fa fa-sign-out" aria-hidden="true"></span>
+              </a>
+            </div>
+            <!-- /menu footer buttons -->
+          </div>
+        </div>
+
+        <!-- top navigation -->
+        <div class="top_nav">
+          <div class="nav_menu">
+            <nav>
+              <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+              </div>
+
+              <ul class="nav navbar-nav navbar-right">
+                <li class="">
+                  <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <img src="{{ user.profile_picture.url }}" alt="">{{ request.user.first_name.capitalize }}
+                    <span class=" fa fa-angle-down"></span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-usermenu pull-right">
+                    <li><a href="{% url 'profile' %}"> Profile</a></li>
+                    <li><a href="{% url 'logoutUser' %}"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                  </ul>
+                </li>
+                {% if user.is_admin %}
+                <li role="presentation" class="dropdown">
+                  <a href="{% url 'view_claims' %}" class="dropdown-toggle info-number"  aria-expanded="false">
+                    <i class="fa fa-envelope-o"></i>
+                    <span class="badge bg-blue">{% if unreplied_count > 0 %} {{ unreplied_count }} {% endif %}</span>
+                  </a>
+                {% endif %}
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <!-- /top navigation -->
+{% else %}
+        <div><a href="{% url 'loginUser' %}">Login</a></div>
+{% endif %}
+        {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == "success" %}
+                <div class="alert alert-success alert-dismissible fade in nav navbar-nav navbar-right" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <strong>{{ message }}</strong>
+                </div>
+            {% elif message.tags == "error" %}
+                <div class="alert alert-danger alert-dismissible fade in nav navbar-nav navbar-right" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <strong>{{ message }}</strong>
+                </div>
+            {% endif %}
+        {% endfor %}
+        {% endif %}
+        <!-- page content -->
+                
+        <div class="right_col" role="main">
+            <div class="">
+              <div class="page-title">
+                <div class="title_left">
+                  <h3>User Profile</h3>
+                </div>
+  
+                
+              </div>
+              
+              <div class="clearfix"></div>
+  
+              <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                  <div class="x_panel">
+                    <div class="x_title">
+                      <h2> </h2>
+                      <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"></a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="x_content">
+                      <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
+                        <div class="profile_img">
+                          <div id="crop-avatar">
+                            <!-- Current avatar -->
+                            <img class="img-responsive avatar-view" src="{{ user.profile_picture.url }}" alt="Avatar" title="Modify profile picture">
+
+                          </div>
+                        </div>
+                        <h3><strong>{{ request.user.first_name.capitalize }} {{ request.user.last_name.capitalize }}</strong></h3>
+  
+                        <ul class="list-unstyled user_data">
+
+                            <li>
+                                <i class="fa fa-envelope user-profile-icon"></i> {{ request.user.email }}
+                            </li>
+                          <li><i class="fa fa-university user-profile-icon"></i> Kigali Independant University
+                          </li>
+  
+                          <li class="m-top-xs">
+                            <i class="fa fa-certificate user-profile-icon"></i>
+                            <a href="{% url 'modify' %}" >Modify your password</a>
+                          </li>
+                          {% if request.user.user_type == 'student' %}
+
+                            {% if student.derogation_deadline and student.has_access_one %}
+                                <button type="button" class="btn btn-success">Allowed to sit for exams up to {{ student.derogation_deadline }}</button>
+                            
+
+                            {% elif not student.derogation_deadline and student.has_access_one %}
+                                <button type="button" class="btn btn-success">Allowed to sit for next exams</button>
+                            {% elif not student.has_access_one %}
+                                <button type="button" class="btn btn-danger">Not allowed to sit for next exams, Pay school fees</button>
+                            
+                            {% endif %}
+
+                          {% endif %}
+                          
+                        </ul>
+                        <br />
+  
+                      </div>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+{% if request.user.user_type == 'student' %}
+                        <div class="profile_title">
+                          <div class="col-md-6">
+                            <h2>{{ student.level }}</h2>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="pull-right" style="margin-top: 5px; background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #E6E9ED">
+                              <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                              <span>{{ student.year_aca }}</span> 
+                            </div>
+                          </div>
+                        </div>
+  
+                        <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                          <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                            <li role="presentation" class="active "><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true"><i class="fa fa-info-circle"></i> Me </a>
+                            </li>
+                            <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false"><i class="fa fa-dollar"></i> Status </a>
+                            </li>
+                            <li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false"><i class="fa fa-photo"></i> </a>
+                            </li>
+                          </ul>
+                          <div id="myTabContent" class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+  
+                              <!-- concerning you -->
+                              <ul class="messages">
+                                <h4><hr></h4>
+                                <h4><i class=" fa fa-user" ></i> Student: <strong>{{ user.first_name.capitalize }}  {{ user.last_name.capitalize }} {{ student.student_name.capitalize }}</strong></h4>
+                                <h4><i class="fa fa-briefcase user-profile-icon"></i> Department/Session/Class:<strong> {{ student.level }}</strong></h4>
+                                <h4><i class="fa fa-phone"></i> Phone number: <strong>{{ student.phone }}</strong></h4>
+                                <h4><hr></h4>
+
+                              </ul>
+                              <!-- concern -->
+  
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+  
+                              <!-- finance -->
+                              <h4><hr></h4>
+                              <p>The TOTAL amount you, <strong>{{ user.first_name.capitalize }}  {{ user.last_name.capitalize }} {{ student.student_name.capitalize }}</strong>, have paid is <strong>{{ student.amount_paid }} Rwandan Francs</strong></p>
+                                    {% if student.derogation_deadline and student.has_access_one %}
+                                        <p>After receiving your derogation, you are allowed to sit for exams up to: <strong>{{ student.derogation_deadline }}</strong></p>
+                                    {% endif %}
+                                    <p><strong>Access Status:</strong> {{ student.has_access_one|yesno:"Authorised,Not Authorised" }}</p>
+                                    <h4><hr></h4>     
+                                    <h5 class="m-top-xs">
+                                        
+                                        <a href="{% url 'claim' %}" ><button type="button" class="btn btn-warning"><i class="fa fa-support"></i> Claim or send a request to financial office</button></a>
+                                        
+                                    </h5>
+                              
+                              <!-- finance -->
+  
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
+                                <p>
+                                    <div> 
+                                        {% if user.profile_picture %}
+                                        <h4><hr></h4> 
+                                            <p>Modify your profile picture by choosing a file of minimum size (<3Mb) and upload : </p>
+                                        {% else %}
+                                            <p>No profile picture uploaded.</p>
+                                        {% endif %}
+                                        <form method="post" enctype="multipart/form-data" action="{% url 'upload_profile_picture' %}">
+                                            {% csrf_token %}
+                                            <input type="file" name="profile_picture">
+                                            <h4><button type="submit" class="btn btn-success">Upload new profile picture</button></h4>
+                                            
+                                        </form>
+                                        <h4><hr></h4> 
+                                    </div>
+                                </p>
+                            </div>
+                          </div>
+                        </div>
+                        {% elif request.user.user_type == 'admin_student' %}
+                        <div>
+                            <hr>
+                            <h4><button type="button" class="btn btn-info">Administrator</button></h4>
+                            <h4>Phone Number: {{ admin_student.admin_phone }}</h4>
+                            <hr>
+                        </div>
+                        {% elif request.user.user_type == 'supervisor' %}
+                        <div>
+                            <hr>
+                            <h4><button type="button" class="btn btn-info">Supervisor</button></h4>
+                            <h4>Phone Number: {{ supervisor.super_phone }}</h4>
+                            <hr>
+                        </div>
+                        {% endif %}
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <!-- /page content -->
+
+       <!-- footer content -->
+       <footer>
+        <div class="pull-right">
+          <div>Made and Designed by <strong>ARMAND CITO MATABA</strong></div>
+          <div>&copy; 2024 ULK POLYTECHNIC DEEE ETT </div>
+        
+          <h3><a href="https://www.instagram.com/ulkkigali" target="_blank"><i class="fa fa-instagram"></i></a>
+          <a href="https://x.com/ULK_info" target="_blank"><i class="fa fa-twitter"></i></a>
+          <a href="https://rw.linkedin.com/company/kigali-independent-university-ulk" ><i class="fa fa-linkedin"></i></a>
+          <a href="{% url 'profile' %}" ><i class="fa fa-university"> ULK</i> </a></h3>
+        </div>
+        <div class="pull-left">
+         <h3> </h3>
+        </div>
+        <div class="clearfix"></div>
+      </footer>
+      <!-- /footer content -->
+      </div>
+    </div>
+   
+    <!-- jQuery -->
+    <script src="{% static 'gentela-gh-pages/vendors/jquery/dist/jquery.min.js' %}"></script>
+    <!-- Bootstrap -->
+    <script src="{% static 'gentela-gh-pages/vendors/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+    <!-- FastClick -->
+    <script src="{% static 'gentela-gh-pages/vendors/fastclick/lib/fastclick.js' %}"></script>
+    <!-- NProgress -->
+    <script src="{% static 'gentela-gh-pages/vendors/nprogress/nprogress.js' %}"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="{% static 'gentela-gh-pages/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js' %}"></script>
+    <!-- iCheck -->
+    <script src="{% static 'gentela-gh-pages/vendors/iCheck/icheck.min.js' %}"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="{% static 'gentela-gh-pages/vendors/moment/min/moment.min.js' %}"></script>
+    <script src="{% static 'gentela-gh-pages/vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+    <!-- bootstrap-wysiwyg -->
+    <script src="{% static 'gentela-gh-pages/vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js' %}"></script>
+    <script src="{% static 'gentela-gh-pages/vendors/jquery.hotkeys/jquery.hotkeys.js' %}"></script>
+    <script src="{% static 'gentela-gh-pages/vendors/google-code-prettify/src/prettify.js' %}"></script>
+    <!-- jQuery Tags Input -->
+    <script src="{% static 'gentela-gh-pages/vendors/jquery.tagsinput/src/jquery.tagsinput.js' %}"></script>
+    <!-- Switchery -->
+    <script src="{% static 'gentela-gh-pages/vendors/switchery/dist/switchery.min.js' %}"></script>
+    <!-- Select2 -->
+    <script src="{% static 'gentela-gh-pages/vendors/select2/dist/js/select2.full.min.js' %}"></script>
+    <!-- Parsley -->
+    <script src="{% static 'gentela-gh-pages/vendors/parsleyjs/dist/parsley.min.js' %}"></script>
+    <!-- Autosize -->
+    <script src="{% static 'gentela-gh-pages/vendors/autosize/dist/autosize.min.js' %}"></script>
+    <!-- jQuery autocomplete -->
+    <script src="{% static 'gentela-gh-pages/vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js' %}"></script>
+    <!-- starrr -->
+    <script src="{% static 'gentela-gh-pages/vendors/starrr/dist/starrr.js' %}"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="{% static 'gentela-gh-pages/build/js/custom.min.js' %}"></script>
+	
+  </body>
+</html>

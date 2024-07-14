@@ -1,0 +1,46 @@
+{% load static %}
+
+<div >
+    
+    <div>
+        <a href="{% url 'profile' %}"><img src="{% static 'images/logot.png' %}" alt="logo"></a>
+        
+    </div>
+    {% if request.user.is_authenticated %}
+    
+    <div><a href="{% url 'logoutUser' %}">Logout</a></div>
+    <div><a href="{% url 'profile' %}">Profile</a></div>
+            {% if request.user.user_type == 'supervisor'%}
+                <small><a href="{% url 'register' %}">Register Students and Administrators</a></small>
+            {% endif %}
+
+            {% if request.user.user_type == 'student' %}
+                <div><a href="{% url 'schedule' %}">Schedule</a></div>
+                <div><a href="{% url 'claim' %}"><small>Claim or request</small></a></div>
+                <div><a href="{% url 'view_claims' %}"><small>Messages</small></a></div>
+                <div><a href="{% url 'exam_status_student' %}"><small>Exam Status</small></a></div>
+            {% endif %}
+
+            {% if user.is_admin %}
+                <a href="/schedule/grouped/">Schedules per class</a>
+                <div><a href="{% url 'manage_students' %}">Manage Students</a></div>
+                <div><a href="{% url 'view_claims' %}"><small>Claims and Requests{% if unreplied_count > 0 %}({{ unreplied_count }}){% endif %}</small></a></div>
+                <div><a href="{% url 'exam_status_admin' %}"><small>Exam Status</small></a></div>
+            {% endif %}
+            
+
+        
+    {% else %}
+    <div><a href="{% url 'loginUser' %}">Login</a></div>
+    
+    {% endif %}
+
+</div>
+<hr>
+        {% if messages %}
+            {% for message in messages %}
+            
+            <div> {{message}}</div>
+            
+            {% endfor %}
+        {% endif %}

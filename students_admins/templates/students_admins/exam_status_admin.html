@@ -1,0 +1,326 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Control access | </title>
+    
+
+    <!-- Bootstrap -->
+    <link href="{% static 'gentela-gh-pages/vendors/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{% static 'gentela-gh-pages/vendors/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="{% static 'gentela-gh-pages/vendors/nprogress/nprogress.css' %}" rel="stylesheet">
+    <!-- iCheck -->
+   <link href="{% static 'gentela-gh-pages/vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="{% static 'gentela-gh-pages/build/css/custom.min.css' %}" rel="stylesheet">
+    
+  </head>
+
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="{% url 'profile' %}" class="site_title"><i class="fa fa-university"></i> <span>Control Service</span></a>
+              
+            </div>
+
+            <div class="clearfix"></div>
+{% if request.user.is_authenticated %}
+
+            <!-- menu profile quick info -->
+            {% if user.profile_picture %}
+            <div class="profile clearfix">
+              <div class="profile_pic">
+                <img src="{{ user.profile_picture.url }}" alt="..." class="img-circle profile_img">
+              </div>
+              {% else %}
+            <p>No profile picture uploaded.</p>
+            {% endif %}
+              <div class="profile_info">
+                <span>Welcome,</span>
+                <h2>{{ request.user.first_name.capitalize }}</h2>
+              </div>
+            </div>
+            <!-- /menu profile quick info -->
+
+            <br />
+
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                <div class="menu_section">
+                  <h3>General</h3>
+                  <ul class="nav side-menu">
+                    <li> <a href="{% url 'profile' %}"><i class="fa fa-user"></i> Profile <span></span></a>
+                     
+                    </li>
+                  {% if request.user.user_type == 'supervisor'%}
+                  
+                      <li><a href="{% url 'register' %}"><i class="fa fa-edit"></i> Register Students and Administrators </a>
+                      
+                      </li>
+                  {% endif %}
+  
+                  {% if request.user.user_type == 'student' %}
+                    <li><a href="{% url 'schedule' %}"><i class="fa fa-table"></i> Schedule</a>
+                    </li>
+                    <li><a><i class="fa fa-exclamation-circle"></i> Claim or Request</a>
+                    </li>
+                    <li><a><i class="fa fa-envelope-o"></i>Messages </a>
+                    </li>
+                    <li><a><i class="fa fa-dot-circle-o"></i>Exams Status </a>
+                    </li>
+                  {% endif %}
+                  </ul>
+                </div>
+                <div class="menu_section">
+                  
+                  
+                  <ul class="nav side-menu">
+                  {% if user.is_admin %}
+                    <li><a><i class="fa fa-tasks"></i> Schedules per class <span class="fa fa-chevron-down"></span></a>
+                      <ul class="nav child_menu">
+                        <li><a href="/schedule/grouped/">View Schedules</a></li>
+                        <li><a href="{% url 'add_schedule' %}">Add Schedules</a></li>
+                      </ul>
+                    </li>
+  
+                    <li><a><i class="fa fa-suitcase"></i> Manage <span class="fa fa-chevron-down"></span></a>
+                      <ul class="nav child_menu">
+                        <li><a href="{% url 'manage_students' %}">Manage Students</a></li>
+                        <li><a href="{% url 'manage_reference_amounts' %}">Manage Minimum Amount</a></li>
+                      </ul>  
+                    </li>
+  
+                    <li><a href="{% url 'exam_status_admin' %}"><i class="fa fa-check-square-o"></i> Exam Status </a>
+                    </li>  
+  
+                    <li><a href="{% url 'view_claims' %}"><i class="fa fa-gears"></i> Claims and Requests{% if unreplied_count > 0 %}({{ unreplied_count }}){% endif %}</a>
+                    </li> 
+                  <li><a href="{% url 'learnUse' %}"><i class="fa fa-gear"></i> Learn the Use</a></li>
+
+                  {% endif %}
+  
+                      <li><a href="{% url 'logoutUser' %}"><i class="fa fa-sign-out"></i> Log Out</a></li>
+                  </ul>
+                </div>
+  
+              </div>
+            <!-- /sidebar menu -->
+            <br />
+            <!-- /menu footer buttons -->
+            <div class="sidebar-footer hidden-small">
+                <a data-toggle="tooltip" data-placement="top" title="Settings">
+                  <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                </a>
+                <a data-toggle="tooltip" data-placement="top" title="Lock">
+                  <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+                </a>
+                <a data-toggle="tooltip" data-placement="top" title="Logout" href="{% url 'logoutUser' %}">
+                  <span class="fa fa-sign-out" aria-hidden="true"></span>
+                </a>
+              </div>
+            <!-- /menu footer buttons -->
+          </div>
+        </div>
+
+        <!-- top navigation -->
+        <div class="top_nav">
+            <div class="nav_menu">
+              <nav>
+                <div class="nav toggle">
+                  <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                </div>
+  
+                <ul class="nav navbar-nav navbar-right">
+                  <li class="">
+                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                      <img src="{{ user.profile_picture.url }}" alt="">{{ request.user.first_name.capitalize }}
+                      <span class=" fa fa-angle-down"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-usermenu pull-right">
+                      <li><a href="{% url 'profile' %}"> Profile</a></li>
+                      <li><a href="{% url 'logoutUser' %}"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                    </ul>
+                  </li>
+                  {% if user.is_admin %}
+                  <li role="presentation" class="dropdown">
+                    <a href="{% url 'view_claims' %}" class="dropdown-toggle info-number"  aria-expanded="false">
+                      <i class="fa fa-envelope-o"></i>
+                      <span class="badge bg-blue">{% if unreplied_count > 0 %} {{ unreplied_count }} {% endif %}</span>
+                    </a>
+                  {% endif %}
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        <!-- /top navigation -->
+{% else %}
+        <div><a href="{% url 'loginUser' %}">Login</a></div>
+{% endif %}
+        {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == "success" %}
+                <div class="alert alert-success alert-dismissible fade in nav navbar-nav navbar-right" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <strong>{{ message }}</strong>
+                </div>
+            {% elif message.tags == "error" %}
+                <div class="alert alert-danger alert-dismissible fade in nav navbar-nav navbar-right" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <strong>{{ message }}</strong>
+                </div>
+            {% endif %}
+        {% endfor %}
+        {% endif %}
+
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3><strong>Exams Status of Students</strong></h3>
+              </div>
+
+              <div class="title_right">
+                <form method="GET" action="{% url 'exam_status_admin' %}">
+                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                  <div class="input-group">
+                    
+                    <input type="text" class="form-control" name="search" placeholder="Search by level, name, or roll number" >
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" type="submit">Go!</button>
+                    </span>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row">
+              
+              <div class="clearfix"></div>
+              <div class="clearfix"></div>
+{% for level, details in data.items %}
+              
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2><strong>{{ level }}</strong></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+
+                  <div class="x_content">
+                    {% for exam in details.exams %}
+                    <p>        
+                        <h4>{{ exam.course.capitalize }} - {{ exam.type_exam.capitalize }} - {{ exam.date}}</h4>
+                    </p>
+                    <div class="table-responsive">
+                      <table class="table table-striped jambo_table bulk_action">
+                        <thead>
+                          <tr class="headings">
+                            <th class="column-title">Student </th>
+                            <th class="column-title">Roll Number</th>
+                            <th class="column-title">Entry time </th>
+                            <th class="column-title">Exit Time</th>
+                            <th class="column-title">Status</th>
+                           
+                          </tr>
+                        </thead>
+                        
+                        <tbody>
+                            {% for student_data in details.students %}
+                          <tr class="even pointer">
+                            
+                            <td class=" ">{{ student_data.student.student_name }}</td>
+                            <td class=" ">{{student_data.student.roll_number }}</td>
+
+                            {% for status_data in student_data.exam_statuses %}
+                                        {% if status_data.exam == exam %}
+                                        <td class=" ">{{ status_data.entry_time }}</td>
+                                        <td class=" ">{{ status_data.exit_time }}</td>
+                                        <td class=" ">{{ status_data.status }}</td>
+                                        {% endif %}
+                            {% endfor %}
+                            
+
+                          </tr>
+                          {% endfor %}
+                          
+                        </tbody>
+                      </table>
+                    </div>
+							
+                    {% endfor %}
+                    		
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+            
+            </div>
+          </div>
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right">
+            <div>Made and Designed by <strong>ARMAND CITO MATABA</strong></div>
+            <div>&copy; 2024 ULK POLYTECHNIC DEEE ETT </div>
+          
+            <h3><a href="https://www.instagram.com/ulkkigali" target="_blank"><i class="fa fa-instagram"></i></a>
+            <a href="https://x.com/ULK_info" target="_blank"><i class="fa fa-twitter"></i></a>
+            <a href="https://rw.linkedin.com/company/kigali-independent-university-ulk" ><i class="fa fa-linkedin"></i></a>
+            <a href="{% url 'profile' %}" ><i class="fa fa-university"> ULK</i> </a></h3>
+          </div>
+          <div class="pull-left">
+           <h3> </h3>
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="{% static 'gentela-gh-pages/vendors/jquery/dist/jquery.min.js' %}"></script>
+    <!-- Bootstrap -->
+    <script src="{% static 'gentela-gh-pages/vendors/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+    <!-- FastClick -->
+    <script src="{% static 'gentela-gh-pages/vendors/fastclick/lib/fastclick.js' %}"></script>
+    <!-- NProgress -->
+    <script src="{% static 'gentela-gh-pages/vendors/nprogress/nprogress.js' %}"></script>
+    <!-- iCheck -->
+    <script src="{% static 'gentela-gh-pages/vendors/iCheck/icheck.min.js' %}"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="{% static 'gentela-gh-pages/build/js/custom.min.js' %}"></script>
+
+  </body>
+</html>

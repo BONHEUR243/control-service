@@ -1,0 +1,335 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Control Service | </title>
+
+    <!-- Bootstrap -->
+    <link href="{% static 'gentela-gh-pages/vendors/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{% static 'gentela-gh-pages/vendors/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="{% static 'gentela-gh-pages/vendors/nprogress/nprogress.css' %}" rel="stylesheet">
+    <!-- Animate.css -->
+    <link href="{% static 'gentela-gh-pages/vendors/animate.css/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'gentela-gh-pages/build/css/custom.min.css' %}" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+  </head>
+
+  <body class="logina">
+{% if page == 'loginUser' %}
+    <div>
+      
+      <div class="login_wrapper">
+
+        <div class="animate form login_form">
+          <section class="login_content">
+            <form method="POST" action="">
+                {% csrf_token %}
+              <h1>Login Form</h1>
+              
+              {% if messages %}
+                    {% for message in messages %}
+                        {% if message.tags == "error" %}
+                            <div class="alert alert-danger  " role="alert">
+                                <strong>{{ message }}</strong>
+                            </div>
+                        {% elif message.tags == "success" %}
+                            <div class="alert alert-success  f" role="alert">
+                                <strong>{{ message }}</strong>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+              {% endif %}
+            
+              <div>
+                <label for="email">Email: </label>
+                <input type="email" name="email" id="email" class="form-control" placeholder="citomataba@gmail.com">
+              </div>
+
+              <div>
+                <label>Password: </label>
+                <input type="password" name="pass1" class="form-control" placeholder="your password">
+              </div>
+
+              <div>
+                <input type="Submit" name="loginUser" value="Login" > 
+                <a  href="{% url 'reset' %}">Forgot your password?</a>
+              </div>
+
+              <div class="clearfix"></div>
+
+              <div class="separator">
+                <p class="change_link">
+                Not registered yet? Please go to Administration Office to register you. For further information, contact <strong>+250791449880</strong> or mail this account <strong>ulkcontrolservice@gmail.com</strong>
+
+                  
+                </p>
+
+                <div class="clearfix"></div>
+                <br />
+
+                <div>
+                  <h1><i class="fa fa-university"></i> Kigali Independent University (ULK)</h1>
+                  <p>©2024, Made and designed by Armand Cito Mataba</p>
+                </div>
+              </div>
+            </form>
+          </section>
+        </div>
+
+{% else %}
+    {% if request.user.user_type == 'supervisor'%}
+        <div class="login_wrapper">   
+        <div id="register" class="animate form login_form">
+          <section class="login_content">
+            <form method="POST" action="{% url 'register' %}">
+                {% csrf_token %}
+              <h1>Registration Form</h1>
+              
+
+                <div>Choose the type of User you want to register and follow the steps!</div>
+                <div class="separator"></div>
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.tags == "error" %}
+                            <div class="alert alert-danger  fade in " role="alert">
+                                {{ message }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
+              <div>
+                <label for="fname">First name: </label>
+                <input type="text" name="fname" id="fname" class="form-control" placeholder="First-name"> 
+              </div>
+
+              <div>
+                <label for="lname">Last name: </label>
+                <input type="text" name="lname" id="lname" class="form-control" placeholder="Last-name"> 
+              </div>
+
+              <div>
+                <label for="email">Email: </label>
+                <input type="email" name="email" id="email" class="form-control" placeholder="armand@gmail.com">
+              </div>
+
+              <div>
+                <label>Password: </label>
+                <input type="password" name="pass1" class="form-control" placeholder="Minimum 6 characters">
+              </div>
+
+              <div>
+                <label>Confirm password: </label>
+                <input type="password" name="pass2" class="form-control" placeholder="Rewrite the password">
+              </div>
+
+              <div>
+                 <label for="user_type">Type of User:</label>
+                    <select id="user_type" name="user_type">
+                        <option>Types</option>
+                        <option value="student">Student</option>
+                        <option value="supervisor">Supervisor</option>
+                        <option value="admin_student">Admin</option>
+                    </select><br>
+              </div>
+
+              <div id="admin_student_form" style="display: none;">
+                    <h2>Complete registration for Responsible in Administration</h2>
+                    <label for="admin_phone">Telephone:</label>
+                    <input type="text" id="admin_phone" name="admin_phone" class="form-control" placeholder="Phone Number"><br>
+                    
+                    <input type="Submit" name="admin_student" value="Save the form" > 
+              </div>
+
+              <div id="supervisor_form" style="display: none;">
+                    <h2>Complete registration for Supervisors</h2>
+                    <label for="super_phone">Telephone:</label>
+                    <input type="text" id="super_phone" name="super_phone" class="form-control" placeholder="Phone Number"><br>
+                    
+                    <input type="Submit" name="supervisor" value="Save the form" > 
+              </div>
+
+              <div id="student_form" style="display: none;">
+
+                <H4>Student registration</H4>
+    
+               <label for="student_name">Other Student name: </label>
+               <input type="text" name="student_name" id="student_name" class="form-control" placeholder=""> 
+               
+    
+               <label for="roll_number">Roll Number: </label>
+               <input type="text" name="roll_number" id="roll_number" class="form-control" placeholder="write correctly"> 
+               
+    
+               <label for="year_aca">Academic Year: </label>
+               <input type="text" name="year_aca" id="year_aca" class="form-control" placeholder="Academic Year"> 
+               
+               
+               <label for="phone">Phone Number: </label>
+               <input type="text" name="phone" id="phone" placeholder="phone number" class="form-control" > 
+               
+    
+               <label for="cardId">UID's student card: </label>
+               <input type="text" name="cardId" id="cardId" class="form-control" placeholder="Write correctly in Capital"> 
+               
+                <label for="entry_period">Entry Period:</label>
+                <select id="entry_period" name="entry_period">
+                   <option value="normal">Normal</option>
+                   <option value="type_b">Type B</option>
+                   <option value="type_c">Type C</option>
+                   <option value="type_d">Type D</option>
+                </select><br>
+               
+    
+                <label for="departement">Department:</label>
+                   <select id="departement" name="departement">
+                       <option value="">Select department</option>
+                           {% for departement in departements %}
+                       <option value="{{ departement.id }}">{{ departement.name }}</option>
+                           {% endfor %}
+                   </select><br>
+               
+                <label for="option">Option:</label>
+                   <select id="option" name="option" >
+                       <option value=""></option>
+                   </select><br>
+    
+                <label for="session">Session:</label>
+                   <select id="session" name="session" >
+                       <option value=""></option>
+                   </select><br>
+    
+                <label for="intake">Intake period:</label>
+                   <select id="intake" name="intake" >
+                       <option value=""></option>
+                   </select><br>
+    
+                <label for="level">Class/Level:</label>
+                   <select id="level" name="level" >
+                       <option value=""></option>
+                   </select><br>
+                   <hr>
+                   
+                   <input type="Submit" name="student" value="Save the form" > 
+             </div> 
+
+              <div class="clearfix"></div>
+
+              <div class="separator">
+                
+                <p class="change_link">
+                  <a href="{% url 'profile' %}" class="to_register"> Go back</a>
+                  <a href="{% url 'loginUser' %}" class="to_register"> Login instead </a>
+
+                </p>
+
+                <div class="clearfix"></div>
+                <br />
+
+                <div>
+                  <h1><i class="fa fa-university"></i> Kigali Independent University (ULK)</h1>
+                  <p>©2024, Made and designed by Armand Cito Mataba.</p>
+                  <p> All Rights Reserved. </p>
+                </div>
+              </div>
+            </form>
+          </section>
+        </div>
+        </div>
+        {% endif %}
+
+
+      </div>
+    </div>
+    
+{% endif %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('departement').addEventListener('change', function() {
+            var departementId = this.value;
+            fetch('/get_options/' + departementId + '/')
+                .then(response => response.json())
+                .then(data => {
+                    var optionSelect = document.getElementById('option');
+                    optionSelect.innerHTML = '<option value="">Select an option:</option>';
+                    data.options.forEach(function(option) {
+                        var opt = document.createElement('option');
+                        opt.value = option.id;
+                        opt.innerHTML = option.name;
+                        optionSelect.appendChild(opt);
+                    });
+                });
+        });
+ 
+        document.getElementById('option').addEventListener('change', function() {
+            var optionId = this.value;
+            fetch('/get_sessions/' + optionId + '/')
+                .then(response => response.json())
+                .then(data => {
+                    var sessionSelect = document.getElementById('session');
+                    sessionSelect.innerHTML = '<option value="">Select the desired session:</option>';
+                    data.sessions.forEach(function(session) {
+                        var opt = document.createElement('option');
+                        opt.value = session.id;
+                        opt.innerHTML = session.name;
+                        sessionSelect.appendChild(opt);
+                    });
+                });
+        });
+ 
+        document.getElementById('session').addEventListener('change', function() {
+            var sessionId = this.value;
+            fetch('/get_intakes/' + sessionId + '/')
+                .then(response => response.json())
+                .then(data => {
+                    var intakeSelect = document.getElementById('intake');
+                    intakeSelect.innerHTML = '<option value="">Select intake period; ONLY  FOR YEAR 1</option>';
+                    data.intakes.forEach(function(intake) {
+                        var opt = document.createElement('option');
+                        opt.value = intake.id;
+                        opt.innerHTML = intake.name;
+                        intakeSelect.appendChild(opt);
+                    });
+                });
+        });
+ 
+        document.getElementById('intake').addEventListener('change', function() {
+            var intakeId = this.value;
+            fetch('/get_levels/' + intakeId + '/')
+                .then(response => response.json())
+                .then(data => {
+                    var levelSelect = document.getElementById('level');
+                    levelSelect.innerHTML = '<option value="">Select the class:</option>';
+                    data.levels.forEach(function(level) {
+                        var opt = document.createElement('option');
+                        opt.value = level.id;
+                        opt.innerHTML = level.name;
+                        levelSelect.appendChild(opt);
+                    });
+                });
+        });
+ 
+        document.getElementById('user_type').addEventListener('change', function() {
+                    var userType = this.value;
+                    document.getElementById('student_form').style.display = (userType == 'student') ? 'block' : 'none';
+                    document.getElementById('admin_student_form').style.display = (userType == 'admin_student') ? 'block' : 'none';
+                    document.getElementById('supervisor_form').style.display = (userType == 'supervisor') ? 'block' : 'none';
+                });
+            
+    });
+</script>
+
+  </body>
+</html>
