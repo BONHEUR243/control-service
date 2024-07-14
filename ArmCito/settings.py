@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-bx*%k00o)=un(5$%$c6!1t$n9+k7g0w_3(re*5=*s5lxsklvbe
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['192.168.43.92','127.0.0.1','0.0.0.0','localhost',]
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -147,7 +147,7 @@ MEDIA_ROOT = BASE_DIR/ 'static/images'
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    BASE_DIR /"static",
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
