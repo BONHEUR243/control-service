@@ -23,7 +23,7 @@ PASSWORD_RESET_TIMEOUT=300
 SECRET_KEY = 'django-insecure-bx*%k00o)=un(5$%$c6!1t$n9+k7g0w_3(re*5=*s5lxsklvbe'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
 ALLOWED_HOSTS = ['*']
@@ -147,7 +147,7 @@ MEDIA_ROOT = BASE_DIR/ 'static/images'
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'staticfiles'),
+    os.path.join(BASE_DIR, 'static'),
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
