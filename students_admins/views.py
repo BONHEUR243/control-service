@@ -25,7 +25,7 @@ def user_is_student(user):
 def user_is_supervisor(user):
     return user.is_admin()
 
-@login_required
+@login_required(login_url='loginUser')
 def profile(request):
     user=request.user
     user_type=user.user_type
@@ -67,13 +67,13 @@ def upload_profile_picture(request):
     return render(request, 'profile.html')
 
 
-@login_required
+@login_required(login_url='loginUser')
 def learnUse(request):
     return render(request, 'students_admins/learn.html')
     
 
 
-@login_required
+@login_required(login_url='loginUser')
 def schedule(request):
     user = request.user
     user_type=user.user_type
@@ -104,7 +104,7 @@ def schedule(request):
     return render(request, 'students_admins/schedule.html', {'exams': exams, 'student':student,'unreplied_count':unreplied_count} )
 
 
-@login_required
+@login_required(login_url='loginUser')
 def add_schedule(request):
     if not request.user.is_admin():
         return redirect('schedule')
@@ -126,7 +126,7 @@ def add_schedule(request):
     levels = Level.objects.all()
     return render(request, 'students_admins/add_schedule.html', {'levels': levels})
 
-@login_required
+@login_required(login_url='loginUser')
 def modify_schedule(request, exam_id):
     if not request.user.is_admin():
         return redirect('schedule')
@@ -151,7 +151,7 @@ def modify_schedule(request, exam_id):
     return render(request, 'students_admins/modify_schedule.html', {'exam': exam, 'levels': levels})
 
 
-@login_required
+@login_required(login_url='loginUser')
 def manage_students(request):
     if not request.user.is_admin:
         return redirect('profile')
@@ -197,8 +197,7 @@ def manage_students(request):
 
 
 
-
-@login_required
+@login_required(login_url='loginUser')
 def manage_reference_amounts(request):
     if request.method == 'POST':
         try:
@@ -229,6 +228,8 @@ def manage_reference_amounts(request):
     reference_amount = ReferenceAmount.objects.first()  # Récupérer le premier objet ReferenceAmount
     return render(request, 'students_admins/manage_reference_amounts.html', {'reference_amount': reference_amount})
 
+
+@login_required(login_url='loginUser')
 def update_students_amounts(reference_amount):
     students = Student.objects.all()
     for student in students:
@@ -264,7 +265,7 @@ def update_students_amounts(reference_amount):
 
 
 
-@login_required
+@login_required(login_url='loginUser')
 def manage_student_details(request, student_id):
     if not request.user.is_admin():
         return redirect('profile')
@@ -302,7 +303,7 @@ def manage_student_details(request, student_id):
 
 
 
-@login_required
+@login_required(login_url='loginUser')
 def claim(request):
     if request.user.user_type == 'student':
         if request.method == 'POST':
@@ -336,7 +337,7 @@ def claim(request):
 
 
 
-@login_required
+@login_required(login_url='loginUser')
 def view_claims(request):
     if request.user.user_type == 'admin_student':
         # Filtrer les réclamations par catégorie
@@ -362,7 +363,7 @@ def view_claims(request):
 
 
 
-@login_required
+@login_required(login_url='loginUser')
 def reply_claim(request, message_id):
     if request.user.user_type == 'admin_student':
         message = get_object_or_404(Message, id=message_id, receivers=request.user)
@@ -397,7 +398,7 @@ def reply_claim(request, message_id):
 
 
 
-@login_required
+@login_required(login_url='loginUser')
 def exam_status_student(request):
     student = get_object_or_404(Student, user=request.user)
     exam_statuses = ExamStatus.objects.filter(student=student).order_by('exam__date')
@@ -424,7 +425,7 @@ def exam_status_student(request):
 
     return render(request, 'students_admins/exam_status_student.html', {'status_data': status_data})
 
-@login_required
+@login_required(login_url='loginUser')
 def exam_status_admin(request):
     search_query = request.GET.get('search')
     data = {}
