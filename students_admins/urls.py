@@ -1,8 +1,6 @@
 from django.contrib import admin
 from django.urls import path
 from .import views
-from django.conf import settings
-from django.conf.urls.static import static
 from .views import  exam_status_admin, exam_status_student,claim, view_claims, reply_claim,check_rfid,learnUse
 from Custom_user.views import get_options, get_sessions, get_intakes, get_levels
 
@@ -38,5 +36,3 @@ urlpatterns = [
     path('get_levels/<int:intake_id>/', get_levels, name='get_levels'),
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -13,7 +13,7 @@
 MFRC522 rfid(SS_PIN, RST_PIN);
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 const char* serverName = "http://192.168.43.92:8000/check_rfid/"; 
-
+// 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
 void setup() {
   Serial.begin(115200);
   SPI.begin();
