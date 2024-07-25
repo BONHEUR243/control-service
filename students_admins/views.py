@@ -487,7 +487,7 @@ def check_rfid(request):
             student = Student.objects.get(cardId=card_id)
             if student.has_access_one:
                 response_data = {
-                    'status': 'authorized',
+                    'status': 'Authorized',
                     'student_name': student.student_name.capitalize,
                     'roll_number': student.roll_number,
                     'message': 'Authorised'
@@ -526,15 +526,17 @@ def check_rfid(request):
                     exam_status.save()
             else:
                 response_data = {
-                    'status': 'not authorized',
-                    'student_name': student.student_name,
+                    'status': 'Not authorized',
+                    'student_name': student.student_name.capitalize,
                     'roll_number': student.roll_number,
                     'message': 'Not authorised'
                 }
         except Student.DoesNotExist:
             response_data = {
-                'status': 'unrecognized',
-                'message': 'unrecognised'
+                'status': 'Unrecognized',
+                'student_name': 'Not registered',
+                'roll_number': 'ERROR/Not registered',
+                'message': 'Unrecognised'
             }
 
         return JsonResponse(response_data)
